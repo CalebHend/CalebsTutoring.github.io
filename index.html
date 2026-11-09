@@ -1,0 +1,574 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="description" content="Private calculus, differential equations, biomedical engineering and electrical engineering tutoring with Caleb Hendrick, an applied mathematics PhD student at UC Irvine.">
+  <meta name="theme-color" content="#f8f8f3">
+  <title>Caleb Hendrick | Mathematics Tutoring</title>
+  <style>
+/* A deliberately understated academic visual identity: no UI kits or frameworks. */
+:root {
+  --paper: #f8f8f3; --white: #fff; --ink: #1b2e2b; --text: #344743;
+  --muted: #6a7773; --rule: #d6ddd6; --accent: #17645a;
+  --accent-pale: #eaf0e9; --amber: #9b743e;
+  --serif: Georgia, 'Times New Roman', serif;
+  --sans: -apple-system, BlinkMacSystemFont, 'Segoe UI', Arial, sans-serif;
+}
+* { box-sizing: border-box; }
+html { scroll-behavior: smooth; scroll-padding-top: 86px; }
+body { margin: 0; background:var(--paper); color:var(--ink); font:16px/1.68 var(--sans); -webkit-font-smoothing:antialiased; }
+button, input { font: inherit; }
+a {color:var(--accent); text-decoration-thickness:1px; text-underline-offset:4px;}
+a:hover {color:#0f463e;}
+a:focus-visible,button:focus-visible,input:focus-visible {outline:3px solid #bca06c; outline-offset:3px;}
+.container {max-width:1200px; width:calc(100% - 92px); margin:0 auto;}
+.site-header {border-bottom:1px solid var(--ink); background:var(--paper);}
+.header-inner { min-height:88px; display:flex; justify-content:space-between; gap:30px; align-items:center; }
+.brand {display:flex; flex-direction:column; gap:1px; text-decoration:none; color:var(--ink);}
+.brand strong {font:normal 25px/1.2 var(--serif); letter-spacing:-.045em;}
+.brand span {font:600 10px/1.4 var(--sans); text-transform:uppercase; color:var(--muted); letter-spacing:.14em;}
+nav {display:flex; flex-wrap:wrap; align-items:center; gap:28px;}
+nav a {font-size:13px; font-weight:600; color:var(--text); text-decoration:none;}
+nav a:hover {color:var(--accent); text-decoration:underline;}
+nav a.nav-contact {color:var(--accent); border-bottom:1px solid var(--accent); padding-bottom:3px;}
+.eyebrow, .micro {font-size:11px; font-weight:700; text-transform:uppercase; letter-spacing:.145em; line-height:1.6; color:var(--muted);}
+.hero {display:grid; grid-template-columns:1fr .96fr; gap:6.5vw; padding:88px 0 95px; align-items:center;}
+.hero-copy {min-width:0;}
+.hero .eyebrow {color:var(--accent);}
+.hero h1 {margin:25px 0 25px; font:normal clamp(49px,5.05vw,76px)/1.095 var(--serif); letter-spacing:-.058em; max-width:650px;}
+.hero h1 em {font-weight:normal; font-style:italic; color:var(--accent);}
+.hero .lead {max-width:520px; margin:0; font-size:18px; line-height:1.8; color:#41514d;}
+.hero .secondary-lead {max-width:520px; margin-top:14px; font-size:15px; line-height:1.8; color:var(--muted);}
+.hero-links {display:flex; flex-wrap:wrap; gap:25px; margin:30px 0 0; align-items:center;}
+.text-cta {font-weight:700; font-size:14px; text-decoration:none; border-bottom:1.5px solid var(--accent); padding-bottom:4px;}
+.text-cta.alt {font-weight:500; border-color:#aab8b1; color:#3f514b;}
+.small-proof {margin:42px 0 0; display:flex; gap:25px; align-items:baseline; flex-wrap:wrap; border-top:1px solid var(--rule); padding-top:18px;}
+.small-proof span {font:600 11px/1.4 var(--sans); letter-spacing:.065em; color:#50625b;}
+/* A miniature printed problem, rather than a decorative hero illustration. */
+.working-sheet {min-width:0; background:#fff; border:1px solid #cdd5cc; border-top:3px solid var(--accent); padding:31px 37px 26px; position:relative; box-shadow:8px 8px 0 #e7eae3;}
+.sheet-index {display:flex; align-items:center; justify-content:space-between; gap:12px; padding-bottom:20px; border-bottom:1px solid #dce1da; font:700 10px/1.4 var(--sans); letter-spacing:.13em; text-transform:uppercase; color:#6b7973;}
+.sheet-head {font:normal 27px/1.3 var(--serif); letter-spacing:-.025em; margin:23px 0 11px;}
+.sheet-desc {margin:0 0 16px; font-size:13px; line-height:1.7; color:var(--muted);}
+.working-math {display:grid; grid-template-columns:1fr; gap:9px; padding:11px 0 17px; font:normal 22px/1.65 var(--serif); color:#1d3631;}
+.working-math .work-step {color:#51605a; font-size:19px;}
+.working-math .answer {padding:13px 16px; border-left:2px solid var(--accent); background:#f5f8f4; font-size:26px;}
+.fraction {display:inline-flex; flex-direction:column; align-items:center; vertical-align:middle; line-height:1.15; font-size:.88em; transform:translateY(-.03em); margin:0 .09em;}
+.fraction .num {border-bottom:1px solid currentColor; padding:0 .24em .13em; width:100%; text-align:center;}
+.fraction .den {padding:.13em .15em 0; text-align:center; white-space:nowrap;}
+.sheet-graph {display:block; width:100%; height:auto; border-top:1px solid #e1e6e0; padding-top:13px;}
+.plot-grid {stroke:#e7ebe6; stroke-width:1;}
+.plot-axis {stroke:#71817b; stroke-width:1.2;}
+.plot-tick, .plot-annotation {font-family:var(--sans); fill:#697973; font-size:12px;}
+.plot-annotation {font-size:11px;}
+.sheet-caption {font-size:12px; margin:6px 0 0; color:#748179; line-height:1.55;}
+/* Editorial sections: numbered margins, ruled rows, no generic product cards. */
+.section {border-top:1px solid var(--ink); padding:74px 0 80px;}
+.section-header {display:grid; grid-template-columns:210px 1fr; gap:30px; margin-bottom:54px;}
+.section-header .eyebrow {padding-top:12px;}
+.section-header h2 {margin:0; font:normal clamp(34px,4vw,53px)/1.14 var(--serif); letter-spacing:-.046em;}
+.section-header p {margin:13px 0 0; max-width:670px; font-size:15px; color:var(--muted);}
+.course {border-top:1px solid var(--rule); display:grid; grid-template-columns:minmax(260px,.74fr) minmax(0,1.1fr); gap:6vw; padding:47px 0 64px; align-items:start;}
+.course-name {margin:6px 0 18px; font:normal clamp(30px,3.05vw,45px)/1.15 var(--serif); letter-spacing:-.045em;}
+.course-label {font:600 10px var(--sans); color:#667872; letter-spacing:.17em; text-transform:uppercase;}
+.course-text {font-size:15px; color:#53625c; max-width:370px; margin:0 0 20px; line-height:1.8;}
+.course-topics {list-style:none; padding:0; margin:21px 0 24px; max-width:340px;}
+.course-topics li {padding:8px 0; border-bottom:1px solid var(--rule); color:#52645d; font-size:13px; line-height:1.5;}
+.course-topics li:first-child {border-top:1px solid var(--rule);}
+.rate {display:flex; gap:15px; align-items:baseline; margin:24px 0 15px;}
+.rate strong {font:normal 36px var(--serif); letter-spacing:-.05em; color:var(--ink);}
+.rate span {font-size:13px; color:var(--muted);}
+.course-link {font-size:14px; font-weight:700; text-decoration:none; border-bottom:1px solid var(--accent); padding-bottom:3px;}
+.lab-col {min-width:0;}
+/* Mathematics experiments: instrument-like graphics, not promotional widgets. */
+.math-lab {font-family:var(--sans); padding:0; margin:0; min-width:0; background:transparent; border:0;}
+.lab-header {display:flex; justify-content:space-between; gap:10px; flex-wrap:wrap; align-items:baseline; margin:0 0 14px;}
+.lab-kicker {font:700 10px/1.4 var(--sans); text-transform:uppercase; letter-spacing:.13em; color:var(--accent);}
+.lab-equation {font:italic 20px var(--serif); color:var(--ink);}
+.lab-tabs {display:flex; flex-wrap:wrap; gap:20px; margin-bottom:15px; border-bottom:1px solid var(--rule);}
+.lab-tab {cursor:pointer; border:0; background:transparent; color:#707c77; padding:0 0 10px; font:600 13px var(--sans); border-bottom:2px solid transparent; margin-bottom:-1px;}
+.lab-tab[aria-selected="true"] {color:var(--ink); border-color:var(--accent);}
+.lab-chart {width:100%; aspect-ratio:520 / 288; display:block; background:#fff; border:1px solid #dde4dc; border-radius:0;}
+.lab-control {margin-top:18px;}
+.lab-control label {display:flex; align-items:baseline; justify-content:space-between; gap:9px; font:600 12px/1.45 var(--sans); color:#394f48;}
+.lab-control output {font-variant-numeric:tabular-nums; font:600 14px var(--sans); color:var(--accent);}
+.lab-control input[type="range"] {display:block; width:100%; accent-color:var(--accent); margin:15px 0 6px; cursor:pointer;}
+.lab-range-ends {display:flex; justify-content:space-between; gap:9px; font-size:10px; color:#7b8981;}
+.lab-result {border-top:1px solid var(--rule); border-bottom:1px solid var(--rule); display:flex; align-items:baseline; gap:12px; flex-wrap:wrap; justify-content:space-between; padding:12px 0 10px; margin:17px 0 0; font-size:12px; color:#51675d;}
+.lab-result strong {color:var(--ink); font:600 17px var(--serif); font-variant-numeric:tabular-nums;}
+.result-exact {flex-basis:100%; font-size:11px; color:var(--muted); line-height:1.5;}
+.lab-note {font-size:12px; color:var(--muted); line-height:1.65; margin:13px 0 0;}
+.math-lab [hidden] {display:none!important;}
+.matrix-line {display:flex; align-items:center; justify-content:center; gap:15px; margin:8px 0 14px;}
+.matrix-letter {font:italic 23px var(--serif); color:var(--ink);}
+.matrix-2x2 {position:relative; display:grid; grid-template-columns:repeat(2,58px); grid-template-rows:repeat(2,25px); align-items:center; justify-items:center; padding:3px 10px; font:16px var(--serif); color:#2e514a; font-variant-numeric:tabular-nums;}
+.matrix-2x2:before,.matrix-2x2:after {content:""; position:absolute; top:0; bottom:0; width:6px; border-top:1.5px solid #506d65; border-bottom:1.5px solid #506d65;}
+.matrix-2x2:before {left:0; border-left:1.5px solid #506d65;}
+.matrix-2x2:after {right:0; border-right:1.5px solid #506d65;}
+.lab-legend {display:flex; flex-wrap:wrap; gap:15px; font-size:10px; color:#6b8179; margin:11px 0;}
+.legend-key {display:inline-flex; align-items:center; gap:6px;}
+.legend-dot {display:inline-block; width:7px; height:7px; border-radius:50%;}
+.lab-presets {display:flex; gap:6px; flex-wrap:wrap; margin:10px 0 0;}
+.lab-preset {background:transparent; color:#3f544e; border:1px solid #cbd7ce; border-radius:0; padding:8px 10px; cursor:pointer; font-size:11px; line-height:1.2;}
+.lab-preset.is-active {color:var(--accent); background:#e6eee7; border-color:var(--accent);}
+.engineering-row {border-top:1px solid var(--rule); display:grid; grid-template-columns:minmax(260px,.74fr) minmax(0,1.1fr); gap:6vw; padding:42px 0 10px; align-items:start;}
+.engineering-row h3 {margin:6px 0 15px; font:normal clamp(29px,3vw,43px)/1.16 var(--serif); letter-spacing:-.04em;}
+.engineering-row p {max-width:610px; color:#4c5c56; font-size:15px; line-height:1.8; margin:0 0 10px;}
+.engineering-row .rate {margin:7px 0 14px;}
+/* About & sessions: personal details and readable typographic hierarchy. */
+.about-layout {display:grid; grid-template-columns:1.25fr .75fr; gap:8vw;}
+.about-layout h2 {font:normal clamp(35px,4vw,54px)/1.14 var(--serif); letter-spacing:-.045em; margin:13px 0 23px;}
+.about-layout p {max-width:660px; color:#51625c; font-size:15px; line-height:1.87;}
+.credential-list {border-top:1px solid var(--rule); padding:0; margin:32px 0 0; list-style:none;}
+.credential-list li {padding:13px 0; border-bottom:1px solid var(--rule); display:grid; grid-template-columns:95px 1fr; gap:12px; font-size:13px; color:#485d54;}
+.credential-list strong {font-size:10px; letter-spacing:.12em; text-transform:uppercase; color:#77867d;}
+.quote-column {border-left:1px solid var(--rule); padding-left:38px; align-self:stretch; display:flex; flex-direction:column; justify-content:center;}
+.quote-column blockquote {margin:0; font:italic 32px/1.4 var(--serif); letter-spacing:-.03em; color:#31584f;}
+.quote-column cite {font:normal 12px/1.6 var(--sans); color:#74847a; margin-top:20px;}
+.sessions {border-top:1px solid var(--rule); padding-top:25px; margin-top:44px; display:grid; grid-template-columns:1fr 2fr; gap:45px;}
+.sessions h3 {font:normal 23px var(--serif); margin:0;}
+.sessions p {font-size:14px; margin:0;}
+.contact {border-top:1px solid var(--ink); padding:68px 0 80px; background:#eef2ec;}
+.contact-layout {display:grid; grid-template-columns:1.04fr .96fr; gap:5vw;}
+.contact h2 {font:normal clamp(36px,4.2vw,58px)/1.12 var(--serif); letter-spacing:-.047em; margin:13px 0 15px;}
+.contact p {color:#4e6259; font-size:15px; max-width:600px; line-height:1.8;}
+.contact-methods {border-top:1px solid #cbd6cb; padding-top:12px; display:grid; gap:24px; align-content:center;}
+.contact-method {border-bottom:1px solid #cbd6cb; padding:9px 0 19px;}
+.contact-method .micro {display:block; margin-bottom:6px;}
+.contact-method a {font:normal clamp(18px,2vw,26px)/1.4 var(--serif); color:var(--ink); text-decoration:none; overflow-wrap:anywhere;}
+.contact-method a:hover {text-decoration:underline; color:var(--accent);}
+.disclaimer {font-size:11px!important; color:#75857c!important; max-width:100%!important; margin:27px 0 0;}
+.site-footer {border-top:1px solid #d2ddd0; padding:23px 0 30px; background:#eef2ec;}
+.footer-inner {display:flex; justify-content:space-between; gap:25px; flex-wrap:wrap; color:#64766b; font-size:12px;}
+.footer-inner a {color:#536d60;}
+@media (max-width:1000px){
+  .hero {grid-template-columns:1fr 1fr; gap:4.2vw;}
+  .hero h1 {font-size:clamp(46px,6vw,67px);}
+  .working-sheet {padding:25px 22px;}
+  .course,.engineering-row {gap:4vw; grid-template-columns:minmax(235px,.69fr) minmax(0,1.1fr);}
+  .section-header {grid-template-columns:160px 1fr;}
+  .about-layout {gap:4vw;}
+  .quote-column {padding-left:25px;}
+}
+@media (max-width:760px) {
+  .container {width:calc(100% - 44px);}
+  .header-inner {padding:16px 0; min-height:auto; display:block;}
+  .brand strong {font-size:24px;}
+  nav {margin-top:14px; gap:11px 19px;}
+  nav a {font-size:12px;}
+  .hero {grid-template-columns:1fr; gap:38px; padding:54px 0 64px;}
+  .hero h1 {font-size:clamp(46px,11vw,67px);}
+  .working-sheet {max-width:550px;}
+  .section {padding:48px 0 62px;}
+  .section-header {display:block; margin-bottom:30px;}
+  .section-header .eyebrow {display:block; margin-bottom:15px;}
+  .course,.engineering-row {grid-template-columns:1fr; gap:24px; padding:32px 0 50px;}
+  .course-topics {max-width:none; display:grid; grid-template-columns:1fr 1fr; column-gap:20px;}
+  .about-layout,.contact-layout {grid-template-columns:1fr; gap:40px;}
+  .quote-column {padding:25px 0 0; border-left:0; border-top:1px solid var(--rule);}
+  .sessions {grid-template-columns:1fr; gap:10px;}
+  .contact {padding:52px 0 60px;}
+}
+@media (max-width:470px) {
+  .container {width:calc(100% - 32px);}
+  .hero h1 {font-size:45px;}
+  .working-sheet {padding:21px 16px 16px; box-shadow:5px 5px 0 #e7eae3;}
+  .sheet-head {font-size:23px;}
+  .working-math {font-size:20px;}
+  .working-math .work-step {font-size:16px;}
+  .working-math .answer {font-size:20px;}
+  .course-topics {grid-template-columns:1fr;}
+  .lab-tab {font-size:12px;}
+  .lab-header {align-items:start;}
+  .lab-equation {font-size:16px;}
+  .quote-column blockquote {font-size:27px;}
+  .contact-method a {font-size:20px;}
+}
+@media (prefers-reduced-motion:reduce) {html{scroll-behavior:auto;}}
+</style>
+</head>
+<body>
+  <header class="site-header">
+    <div class="container header-inner">
+      <a href="#top" class="brand" aria-label="Caleb Hendrick, home"><strong>Caleb Hendrick</strong><span>Mathematics · Private Tutoring</span></a>
+      <nav aria-label="Main navigation">
+        <a href="#calculus">Calculus</a>
+        <a href="#differential-equations">Differential equations</a>
+        <a href="#engineering">Engineering</a>
+        <a href="#about">About</a>
+        <a href="#contact" class="nav-contact">Contact ↗</a>
+      </nav>
+    </div>
+  </header>
+  <main id="top">
+    <section class="hero container" aria-labelledby="main-title">
+      <div class="hero-copy">
+        <div class="eyebrow">Private tutoring · Irvine and online</div>
+        <h1 id="main-title">Calculus and differential equations, <em>from first principles.</em></h1>
+        <p class="lead">I’m Caleb, an applied mathematics PhD student at UC Irvine. I tutor university mathematics with an emphasis on understanding where the formulas come from and how to use them.</p>
+        <p class="secondary-lead">I also studied biomedical and electrical engineering as an undergraduate, and can discuss tutoring selected courses in those areas.</p>
+        <div class="hero-links">
+          <a href="mailto:hendrick.caleb8@gmail.com?subject=Mathematics%20Tutoring%20Inquiry&amp;body=Course%3A%0ATopics%20I%20need%20help%20with%3A%0AOnline%20or%20in-person%3A%0AAvailability%3A" class="text-cta">Ask about a session ↗</a>
+          <a href="#calculus" class="text-cta alt">See subjects and examples ↓</a>
+        </div>
+        <div class="small-proof" aria-label="Subjects and tutoring formats">
+          <span>Calculus I–III</span><span>Differential equations</span><span>Online &amp; in-person</span>
+        </div>
+      </div>
+      <aside class="working-sheet" aria-label="Worked differential equation example">
+        <div class="sheet-index"><span>A worked example</span><span>01 / Initial-value problem</span></div>
+        <h2 class="sheet-head">Solving a differential equation</h2>
+        <p class="sheet-desc">A simple growth model, solved by separation of variables.</p>
+        <div class="working-math">
+          <div>y′ = y(1 − y), &nbsp; y(0) = ¼</div>
+          <div class="work-step">ln <span class="fraction"><span class="num">y</span><span class="den">1 − y</span></span> = t + C</div>
+          <div class="answer">y(t) = <span class="fraction"><span class="num">1</span><span class="den">1 + 3e<sup>−t</sup></span></span></div>
+        </div>
+        <svg class="sheet-graph" role="img" aria-label="The solution y of t equals one over one plus three e to the minus t, starting at one quarter and approaching one as time increases." viewBox="0 0 520 250" xmlns="http://www.w3.org/2000/svg">
+          <title>Solution to y prime equals y times one minus y, with y of zero equal to one quarter</title>
+          <line x1="57.0" y1="27" x2="57.0" y2="210" class="plot-grid"/>
+<text x="57.0" y="233" text-anchor="middle" class="plot-tick">0</text>
+<line x1="199.7" y1="27" x2="199.7" y2="210" class="plot-grid"/>
+<text x="199.7" y="233" text-anchor="middle" class="plot-tick">2</text>
+<line x1="342.3" y1="27" x2="342.3" y2="210" class="plot-grid"/>
+<text x="342.3" y="233" text-anchor="middle" class="plot-tick">4</text>
+<line x1="485.0" y1="27" x2="485.0" y2="210" class="plot-grid"/>
+<text x="485.0" y="233" text-anchor="middle" class="plot-tick">6</text>
+<line x1="57" y1="210.0" x2="485" y2="210.0" class="plot-grid"/>
+<text x="46" y="214.0" text-anchor="end" class="plot-tick">0</text>
+<line x1="57" y1="171.6" x2="485" y2="171.6" class="plot-grid"/>
+<line x1="57" y1="133.2" x2="485" y2="133.2" class="plot-grid"/>
+<text x="46" y="137.2" text-anchor="end" class="plot-tick">0.5</text>
+<line x1="57" y1="94.8" x2="485" y2="94.8" class="plot-grid"/>
+<line x1="57" y1="56.4" x2="485" y2="56.4" class="plot-grid"/>
+<text x="46" y="60.4" text-anchor="end" class="plot-tick">1</text>
+  <line x1="57" y1="56.4" x2="485" y2="56.4" stroke="#b99a6b" stroke-width="1.2" stroke-dasharray="5 5"/>
+  <text x="474" y="46.4" text-anchor="end" class="plot-annotation">equilibrium y = 1</text>
+  <line x1="57" y1="27" x2="57" y2="210" class="plot-axis"/>
+  <line x1="57" y1="210" x2="485" y2="210" class="plot-axis"/>
+  <path d="M57.00,171.59 L58.78,170.87 L60.57,170.13 L62.35,169.39 L64.13,168.64 L65.92,167.88 L67.70,167.11 L69.48,166.33 L71.27,165.55 L73.05,164.75 L74.83,163.95 L76.62,163.14 L78.40,162.32 L80.18,161.50 L81.97,160.66 L83.75,159.82 L85.53,158.97 L87.32,158.12 L89.10,157.26 L90.88,156.39 L92.67,155.51 L94.45,154.63 L96.23,153.74 L98.02,152.85 L99.80,151.95 L101.58,151.04 L103.37,150.13 L105.15,149.21 L106.93,148.29 L108.72,147.37 L110.50,146.44 L112.28,145.50 L114.07,144.57 L115.85,143.63 L117.63,142.68 L119.42,141.73 L121.20,140.79 L122.98,139.83 L124.77,138.88 L126.55,137.92 L128.33,136.97 L130.12,136.01 L131.90,135.05 L133.68,134.09 L135.47,133.13 L137.25,132.17 L139.03,131.21 L140.82,130.25 L142.60,129.29 L144.38,128.33 L146.17,127.38 L147.95,126.42 L149.73,125.47 L151.52,124.52 L153.30,123.58 L155.08,122.63 L156.87,121.69 L158.65,120.76 L160.43,119.82 L162.22,118.89 L164.00,117.97 L165.78,117.05 L167.57,116.13 L169.35,115.22 L171.13,114.32 L172.92,113.42 L174.70,112.52 L176.48,111.64 L178.27,110.75 L180.05,109.88 L181.83,109.01 L183.62,108.15 L185.40,107.29 L187.18,106.45 L188.97,105.61 L190.75,104.77 L192.53,103.95 L194.32,103.13 L196.10,102.32 L197.88,101.52 L199.67,100.73 L201.45,99.94 L203.23,99.17 L205.02,98.40 L206.80,97.64 L208.58,96.89 L210.37,96.15 L212.15,95.42 L213.93,94.69 L215.72,93.98 L217.50,93.27 L219.28,92.58 L221.07,91.89 L222.85,91.21 L224.63,90.54 L226.42,89.88 L228.20,89.23 L229.98,88.59 L231.77,87.96 L233.55,87.34 L235.33,86.72 L237.12,86.12 L238.90,85.52 L240.68,84.94 L242.47,84.36 L244.25,83.79 L246.03,83.23 L247.82,82.68 L249.60,82.14 L251.38,81.61 L253.17,81.09 L254.95,80.57 L256.73,80.07 L258.52,79.57 L260.30,79.08 L262.08,78.60 L263.87,78.13 L265.65,77.67 L267.43,77.21 L269.22,76.77 L271.00,76.33 L272.78,75.90 L274.57,75.48 L276.35,75.06 L278.13,74.66 L279.92,74.26 L281.70,73.86 L283.48,73.48 L285.27,73.10 L287.05,72.73 L288.83,72.37 L290.62,72.02 L292.40,71.67 L294.18,71.33 L295.97,70.99 L297.75,70.67 L299.53,70.35 L301.32,70.03 L303.10,69.72 L304.88,69.42 L306.67,69.13 L308.45,68.84 L310.23,68.55 L312.02,68.28 L313.80,68.00 L315.58,67.74 L317.37,67.48 L319.15,67.22 L320.93,66.97 L322.72,66.73 L324.50,66.49 L326.28,66.25 L328.07,66.03 L329.85,65.80 L331.63,65.58 L333.42,65.37 L335.20,65.16 L336.98,64.95 L338.77,64.75 L340.55,64.56 L342.33,64.37 L344.12,64.18 L345.90,63.99 L347.68,63.82 L349.47,63.64 L351.25,63.47 L353.03,63.30 L354.82,63.14 L356.60,62.98 L358.38,62.82 L360.17,62.67 L361.95,62.52 L363.73,62.37 L365.52,62.23 L367.30,62.09 L369.08,61.95 L370.87,61.82 L372.65,61.69 L374.43,61.56 L376.22,61.44 L378.00,61.32 L379.78,61.20 L381.57,61.08 L383.35,60.97 L385.13,60.86 L386.92,60.75 L388.70,60.65 L390.48,60.54 L392.27,60.44 L394.05,60.35 L395.83,60.25 L397.62,60.16 L399.40,60.07 L401.18,59.98 L402.97,59.89 L404.75,59.80 L406.53,59.72 L408.32,59.64 L410.10,59.56 L411.88,59.48 L413.67,59.41 L415.45,59.33 L417.23,59.26 L419.02,59.19 L420.80,59.12 L422.58,59.06 L424.37,58.99 L426.15,58.93 L427.93,58.86 L429.72,58.80 L431.50,58.74 L433.28,58.69 L435.07,58.63 L436.85,58.58 L438.63,58.52 L440.42,58.47 L442.20,58.42 L443.98,58.37 L445.77,58.32 L447.55,58.27 L449.33,58.22 L451.12,58.18 L452.90,58.13 L454.68,58.09 L456.47,58.05 L458.25,58.01 L460.03,57.97 L461.82,57.93 L463.60,57.89 L465.38,57.85 L467.17,57.82 L468.95,57.78 L470.73,57.75 L472.52,57.71 L474.30,57.68 L476.08,57.65 L477.87,57.62 L479.65,57.59 L481.43,57.56 L483.22,57.53 L485.00,57.50" fill="none" stroke="#1a675b" stroke-width="3.2" stroke-linejoin="round" stroke-linecap="round"/>
+  <circle cx="57.0" cy="171.6" r="4.5" fill="#a37542" stroke="#fff" stroke-width="2"/>
+  <text x="73" y="158.6" class="plot-annotation">y(0) = ¼</text>
+  <text x="494" y="229" class="plot-annotation">t</text>
+
+        </svg>
+        <p class="sheet-caption">The curve rises from y(0) = ¼ toward the equilibrium solution y = 1.</p>
+      </aside>
+    </section>
+
+    <section class="section" id="subjects" aria-labelledby="subjects-title">
+      <div class="container">
+        <div class="section-header">
+          <span class="eyebrow">01 / Courses</span>
+          <div><h2 id="subjects-title">Subjects &amp; examples</h2><p>Each session is built around your actual course. The demonstrations below show two of the ideas we can work through together.</p></div>
+        </div>
+
+        <article class="course" id="calculus" aria-labelledby="calculus-heading">
+          <div>
+            <div class="course-label">Mathematics / 01</div>
+            <h3 class="course-name" id="calculus-heading">Calculus I, II &amp; III</h3>
+            <p class="course-text">Limits, differentiation, integration, sequences, series, multivariable calculus, and their geometric meaning.</p>
+            <ul class="course-topics" aria-label="Calculus tutoring topics">
+              <li>Derivatives and applications</li>
+              <li>Riemann sums and definite integrals</li>
+              <li>Sequences, series and convergence</li>
+              <li>Partial derivatives and vector calculus</li>
+            </ul>
+            <div class="rate"><strong>$55</strong><span>per hour</span></div>
+            <a href="mailto:hendrick.caleb8@gmail.com?subject=Mathematics%20Tutoring%20Inquiry&amp;body=Course%3A%0ATopics%20I%20need%20help%20with%3A%0AOnline%20or%20in-person%3A%0AAvailability%3A" class="course-link">Inquire about calculus tutoring ↗</a>
+          </div>
+          <div class="lab-col"><div aria-label="Interactive calculus demonstration" class="math-lab" id="calculus-demo">
+<div class="lab-header"><span class="lab-kicker">Interactive calculus lab</span><span class="lab-equation">f(x) = 2x² − x³</span></div>
+<div aria-label="Calculus demonstration mode" class="lab-tabs" role="tablist">
+<button aria-controls="area-controls" aria-selected="true" class="lab-tab" data-calc-mode="area" role="tab" type="button">Riemann sums</button>
+<button aria-controls="tangent-controls" aria-selected="false" class="lab-tab" data-calc-mode="tangent" role="tab" type="button">Tangent &amp; slope</button>
+</div>
+<svg aria-label="Interactive graph of two x squared minus x cubed" class="lab-chart" id="calculus-plot" role="img" viewBox="0 0 520 288"></svg>
+<div class="lab-control" id="area-controls" role="tabpanel">
+<label for="rectangle-slider">Number of rectangles <output for="rectangle-slider" id="rectangle-count">8</output></label>
+<input aria-label="Number of Riemann sum rectangles" id="rectangle-slider" max="80" min="2" step="1" type="range" value="8"/>
+<div class="lab-range-ends"><span>2 wide rectangles</span><span>80 narrow rectangles</span></div>
+<div class="lab-result"><span>Midpoint Riemann sum</span><strong aria-live="polite" id="riemann-estimate">—</strong><span class="result-exact">Δx = <span id="rectangle-width">0.250</span> · Exact area: ∫₀² f(x) dx = 4/3 ≈ 1.33333</span></div>
+</div>
+<div class="lab-control" hidden="" id="tangent-controls" role="tabpanel">
+<label for="tangent-slider">Move the tangent point, a <output for="tangent-slider" id="tangent-position">1.00</output></label>
+<input aria-label="Horizontal location of tangent line" id="tangent-slider" max="2" min="0" step="0.02" type="range" value="1"/>
+<div class="lab-range-ends"><span>x = 0</span><span>x = 2</span></div>
+<div class="lab-result"><span>f′(a) = 4a − 3a²</span><strong aria-live="polite" id="tangent-slope">1.000</strong><span class="result-exact">Height at the point: f(a) = <span id="tangent-height">1.000</span> · Gold line is the tangent.</span></div>
+</div>
+<p class="lab-note">Explore the same function in two ways: narrow the midpoint rectangles to approach the exact integral, or move the tangent point to see its instantaneous slope.</p>
+</div></div>
+        </article>
+
+        <article class="course" id="differential-equations" aria-labelledby="ode-heading">
+          <div>
+            <div class="course-label">Mathematics / 02</div>
+            <h3 class="course-name" id="ode-heading">Differential equations</h3>
+            <p class="course-text">First- and higher-order equations, linear systems, eigenvalues, stability, and the geometry of phase portraits.</p>
+            <ul class="course-topics" aria-label="Differential equations tutoring topics">
+              <li>First-order solution methods</li>
+              <li>Linear constant-coefficient equations</li>
+              <li>2 × 2 systems and eigenvectors</li>
+              <li>Phase portraits and stability</li>
+            </ul>
+            <div class="rate"><strong>$60</strong><span>per hour</span></div>
+            <a href="mailto:hendrick.caleb8@gmail.com?subject=Mathematics%20Tutoring%20Inquiry&amp;body=Course%3A%0ATopics%20I%20need%20help%20with%3A%0AOnline%20or%20in-person%3A%0AAvailability%3A" class="course-link">Inquire about DE tutoring ↗</a>
+          </div>
+          <div class="lab-col"><div aria-label="Interactive differential equations phase portrait" class="math-lab ode-lab" id="ode-demo">
+<div class="lab-header"><span class="lab-kicker">Interactive differential equations lab</span><span class="lab-equation">z′ = Az</span></div>
+<div class="matrix-line"><span class="matrix-letter">A =</span><div aria-label="Two by two matrix" class="matrix-2x2"><span id="matrix-11">−0.45</span><span>−1</span><span>1</span><span id="matrix-22">−0.45</span></div></div>
+<svg aria-label="Phase plane vector field and solution curves for a two by two system" class="lab-chart" id="ode-plot" role="img" viewBox="0 0 520 288"></svg>
+<div aria-hidden="true" class="lab-legend"><span class="legend-key"><span class="legend-dot" style="background:#9bb3bb"></span>Vector field</span><span class="legend-key"><span class="legend-dot" style="background:#228579"></span>Solution curves</span><span class="legend-key"><span class="legend-dot" style="background:#d09d49"></span>Selected solution</span></div>
+<div class="lab-control">
+<label for="mu-slider">Matrix parameter, μ <output for="mu-slider" id="mu-value">−0.45</output></label>
+<input aria-label="Adjust diagonal matrix parameter mu" id="mu-slider" max="1.2" min="-1.2" step="0.05" type="range" value="-0.45"/>
+<div class="lab-range-ends"><span>Stable (μ &lt; 0)</span><span>Center (μ = 0)</span><span>Unstable (μ &gt; 0)</span></div>
+<div aria-label="Phase portrait examples" class="lab-presets"><button class="lab-preset" data-ode-mu="-0.5" type="button">Stable spiral</button><button class="lab-preset" data-ode-mu="0" type="button">Center</button><button class="lab-preset" data-ode-mu="0.5" type="button">Unstable spiral</button></div>
+</div>
+<div class="lab-control">
+<label for="time-slider">Follow the gold solution, time t <output for="time-slider" id="time-value">2.4</output></label>
+<input aria-label="Move forward in time along selected solution" id="time-slider" max="5" min="0" step="0.1" type="range" value="2.4"/>
+<div class="lab-range-ends"><span>t = 0</span><span>t = 5</span></div>
+</div>
+<div class="lab-result"><span aria-live="polite" id="ode-status">Stable spiral</span><strong id="ode-eigenvalues">Eigenvalues: −0.45 ± i</strong><span class="result-exact"><span id="ode-solution">x(2.4) = (−0.21, 0.19)</span> <span id="ode-visibility"></span></span></div>
+<p class="lab-note">The arrows show the phase-plane vector field. The colored curves solve z′ = Az for different initial conditions. Change μ to see how the equilibrium at the origin changes stability.</p>
+</div></div>
+        </article>
+
+        <article class="engineering-row" id="engineering" aria-labelledby="engineering-heading">
+          <div>
+            <div class="course-label">Engineering / 03</div>
+            <h3 id="engineering-heading">Biomedical &amp; electrical engineering</h3>
+            <div class="rate"><strong>$65</strong><span>per hour</span></div>
+          </div>
+          <div>
+            <p>My undergraduate studies included biomedical engineering and electrical engineering. I can also help with selected courses in these disciplines, depending on the specific material.</p>
+            <p>Please send the course title, syllabus, or topics first so we can discuss whether the course is a good fit.</p>
+            <a href="mailto:hendrick.caleb8@gmail.com?subject=Engineering%20Tutoring%20Inquiry&amp;body=Course%3A%0ATopics%3A%0ASyllabus%20or%20course%20details%3A" class="course-link">Discuss an engineering course ↗</a>
+          </div>
+        </article>
+      </div>
+    </section>
+
+    <section class="section" id="about" aria-labelledby="about-heading">
+      <div class="container">
+        <div class="about-layout">
+          <div>
+            <div class="eyebrow">02 / Background</div>
+            <h2 id="about-heading">A little about me</h2>
+            <p>I’m an applied mathematics PhD student at UC Irvine, with university teaching experience in differential equations, calculus, and biomedical engineering systems. My research interests include dynamical systems, mathematical modeling, and differential equations.</p>
+            <p>Before graduate school, I studied biomedical engineering and electrical engineering. That background continues to shape the way I explain mathematics: I connect the theory to concrete problems, without skipping the underlying reasoning.</p>
+            <ul class="credential-list">
+              <li><strong>Graduate</strong><span>Applied mathematics · UC Irvine</span></li>
+              <li><strong>Undergraduate</strong><span>Biomedical engineering &amp; electrical engineering</span></li>
+              <li><strong>Teaching</strong><span>Differential Equations · Calculus · BME Systems</span></li>
+            </ul>
+          </div>
+          <div class="quote-column">
+            <div class="eyebrow">A thought about mathematics</div>
+            <blockquote>“Calculus is the language of the universe.”</blockquote>
+            <cite>Inspired by a theme associated with Richard Feynman; paraphrased, not a verified direct quote.</cite>
+          </div>
+        </div>
+        <div class="sessions">
+          <h3>What a session looks like</h3>
+          <p>Send the class and topics you’re working on. We’ll discuss your goals, work carefully through examples, and identify what to practice next. Sessions are available online or in person by arrangement in the Irvine / Orange County area.</p>
+        </div>
+      </div>
+    </section>
+
+    <section class="contact" id="contact" aria-labelledby="contact-heading">
+      <div class="container">
+        <div class="contact-layout">
+          <div>
+            <div class="eyebrow">03 / Contact</div>
+            <h2 id="contact-heading">Have a course in mind?</h2>
+            <p>Tell me what you’re studying, where you’re getting stuck, and when you’d like to meet. I’ll let you know whether I can help and what times are available.</p>
+          </div>
+          <div class="contact-methods">
+            <div class="contact-method"><span class="micro">Email · preferred</span><a href="mailto:hendrick.caleb8@gmail.com?subject=Mathematics%20Tutoring%20Inquiry&amp;body=Course%3A%0ATopics%20I%20need%20help%20with%3A%0AOnline%20or%20in-person%3A%0AAvailability%3A">hendrick.caleb8@gmail.com ↗</a></div>
+            <div class="contact-method"><span class="micro">Phone</span><a href="tel:+19495245061">(949) 524-5061</a></div>
+          </div>
+        </div>
+        <p class="disclaimer">Independent private tutoring, not an official UC Irvine tutoring service. I do not complete graded work for students or privately tutor students I currently teach or grade.</p>
+      </div>
+    </section>
+  </main>
+  <footer class="site-footer">
+    <div class="container footer-inner"><span>© 2026 Caleb Hendrick</span><span>Mathematics tutoring · Irvine / Online</span><span><a href="#top">Back to top ↑</a></span></div>
+  </footer>
+  <script>
+/* Interactive calculus and linear ODE demonstrations; no dependencies. */
+(() => {
+  'use strict';
+  const $ = id => document.getElementById(id);
+  const fmt = (v, digits=2) => (Math.abs(v) < Math.pow(10,-digits)/2 ? 0 : v).toFixed(digits);
+
+  const cSvg = $('calculus-plot');
+  if (cSvg) {
+    const rectangles = $('rectangle-slider');
+    const tangentSlider = $('tangent-slider');
+    const areaControls = $('area-controls');
+    const tangentControls = $('tangent-controls');
+    const tabs = Array.from(document.querySelectorAll('[data-calc-mode]'));
+    let mode = 'area';
+    const f = x => 2*x*x - x*x*x;
+    const derivative = x => 4*x - 3*x*x;
+    const P = {left: 47, right: 18, top: 18, bottom: 31, width: 520, height: 288};
+    const X = x => P.left + x/2 * (P.width-P.left-P.right);
+    const Y = y => P.top + (1.52-y)/(1.52+.26) * (P.height-P.top-P.bottom);
+    const plotWidth = P.width-P.left-P.right, plotHeight=P.height-P.top-P.bottom;
+    const base = () => {
+      let s = `<defs><clipPath id="calculus-view-clip"><rect x="${P.left}" y="${P.top}" width="${plotWidth}" height="${plotHeight}"/></clipPath></defs>`;
+      for (let y of [0,.5,1,1.5]) {
+        s+=`<line x1="${P.left}" x2="${P.width-P.right}" y1="${Y(y)}" y2="${Y(y)}" stroke="#e8efeb"/>`;
+        s+=`<text x="${P.left-8}" y="${Y(y)+4}" font-size="10" text-anchor="end" fill="#8a9a95">${y}</text>`;
+      }
+      for (let x of [0,.5,1,1.5,2]) {
+        s+=`<line x1="${X(x)}" x2="${X(x)}" y1="${P.top}" y2="${P.height-P.bottom}" stroke="#f0f4f1"/>`;
+        s+=`<text x="${X(x)}" y="${P.height-11}" font-size="10" text-anchor="middle" fill="#8a9a95">${x}</text>`;
+      }
+      s+=`<line x1="${P.left}" y1="${Y(0)}" x2="${X(2)}" y2="${Y(0)}" stroke="#607c76" stroke-width="1.2"/>`;
+      s+=`<line x1="${X(0)}" y1="${P.top}" x2="${X(0)}" y2="${P.height-P.bottom}" stroke="#607c76" stroke-width="1.2"/>`;
+      s+=`<text x="${P.width-11}" y="${Y(0)-7}" text-anchor="end" fill="#617a73" font-size="11" font-style="italic">x</text>`;
+      s+=`<text x="${P.left+9}" y="${P.top+10}" fill="#617a73" font-size="11" font-style="italic">y</text>`;
+      return s;
+    };
+    function draw() {
+      const n=Number(rectangles.value);
+      const a=Number(tangentSlider.value);
+      $('rectangle-count').textContent=n;
+      $('rectangle-width').textContent=fmt(2/n,3);
+      $('tangent-position').textContent=fmt(a,2);
+      let s = base();
+      if (mode === 'area') {
+        let estimate=0;
+        s+=`<g clip-path="url(#calculus-view-clip)">`;
+        for(let i=0;i<n;i++) {
+          const left=2*i/n, right=2*(i+1)/n, mid=(left+right)/2, height=f(mid);
+          estimate += height * 2/n;
+          s+=`<rect x="${X(left)}" y="${Y(height)}" width="${X(right)-X(left)}" height="${Y(0)-Y(height)}" fill="#71b9a6" fill-opacity=".34" stroke="#158374" stroke-opacity=".72" stroke-width=".9"/>`;
+        }
+        s+='</g>';
+        $('riemann-estimate').textContent=fmt(estimate,5);
+      } else {
+        const m=derivative(a), fa=f(a);
+        const x1=0,x2=2;
+        s+=`<g clip-path="url(#calculus-view-clip)">`;
+        s+=`<line x1="${X(x1)}" y1="${Y(fa+m*(x1-a))}" x2="${X(x2)}" y2="${Y(fa+m*(x2-a))}" stroke="#d7a450" stroke-width="3" stroke-linecap="round"/>`;
+        s+='</g>';
+        s+=`<circle cx="${X(a)}" cy="${Y(fa)}" r="5.8" fill="#c6933e" stroke="white" stroke-width="2"/>`;
+        s+=`<text x="${Math.min(X(a)+12,X(2)-88)}" y="${Math.max(P.top+17,Y(fa)-14)}" font-size="12" font-weight="700" fill="#aa782d">f′(a) = ${fmt(m,3)}</text>`;
+        $('tangent-slope').textContent=fmt(m,3);
+        $('tangent-height').textContent=fmt(fa,3);
+      }
+      let path='';
+      for(let k=0;k<=180;k++) {
+        const x=2*k/180;
+        path+=(k?' L':'M')+X(x).toFixed(2)+' '+Y(f(x)).toFixed(2);
+      }
+      s+=`<path d="${path}" fill="none" stroke="#0e6b62" stroke-width="3.7" stroke-linecap="round" stroke-linejoin="round"/>`;
+      s+=`<text x="${X(1.5)}" y="${Y(f(1.5))-16}" fill="#0c6c63" font-size="13" font-family="Georgia" font-style="italic">f(x) = 2x² − x³</text>`;
+      cSvg.innerHTML=s;
+      cSvg.setAttribute('aria-label',mode==='area'?`Midpoint Riemann approximation with ${n} rectangles for 2x squared minus x cubed from zero to two.`:`Tangent line to 2x squared minus x cubed at x equals ${fmt(a,2)}, with slope ${fmt(derivative(a),3)}.`);
+    }
+    const setMode = next => {
+      mode=next;
+      tabs.forEach(tab=>{
+        const active=tab.dataset.calcMode===mode;
+        tab.setAttribute('aria-selected',String(active));
+        tab.tabIndex=active?0:-1;
+      });
+      areaControls.hidden=mode!=='area';
+      tangentControls.hidden=mode!=='tangent';
+      draw();
+    };
+    tabs.forEach(tab=>tab.addEventListener('click',()=>setMode(tab.dataset.calcMode)));
+    rectangles.addEventListener('input',draw);
+    tangentSlider.addEventListener('input',draw);
+    setMode('area');
+  }
+
+  const odeSvg = $('ode-plot');
+  if (odeSvg) {
+    const muSlider=$('mu-slider'), tSlider=$('time-slider');
+    const presets=Array.from(document.querySelectorAll('[data-ode-mu]'));
+    const p={width:520,height:288,left:39,right:20,top:16,bottom:28,limit:2.35};
+    const W=p.width-p.left-p.right, H=p.height-p.top-p.bottom;
+    const X=x=>p.left+(x+p.limit)/(2*p.limit)*W;
+    const Y=y=>p.top+(p.limit-y)/(2*p.limit)*H;
+    const nice=n=>Number(n).toFixed(1);
+    const coord=(x,y)=>`${X(x).toFixed(1)} ${Y(y).toFixed(1)}`;
+    function flowPath(mu,r0,theta,tmin,tmax,step=.055){
+      let s='',inside=false;
+      for(let t=tmin;t<=tmax+step*.1;t+=step) {
+        const r=r0*Math.exp(mu*t);
+        if(r<.01||r>3.6){inside=false;continue;}
+        const x=r*Math.cos(theta+t),y=r*Math.sin(theta+t);
+        s+=(inside?' L':'M')+coord(x,y);
+        inside=true;
+      }
+      return s;
+    }
+    function draw(){
+      const mu=Number(muSlider.value),t=Number(tSlider.value);
+      $('mu-value').textContent=(mu>=0?'+':'')+fmt(mu,2);
+      $('time-value').textContent=fmt(t,1);
+      $('matrix-11').textContent=fmt(mu,2);
+      $('matrix-22').textContent=fmt(mu,2);
+      $('ode-eigenvalues').textContent=`Eigenvalues: ${fmt(mu,2)} ± i`;
+      const status=mu<-.001?'Stable spiral':mu>.001?'Unstable spiral':'Center (closed orbits)';
+      $('ode-status').textContent=status;
+      presets.forEach(el=>el.classList.toggle('is-active',Math.abs(Number(el.dataset.odeMu)-mu)<.001));
+      let s=`<defs><clipPath id="ode-view-clip"><rect x="${p.left}" y="${p.top}" width="${W}" height="${H}"/></clipPath></defs>`;
+      for(let i=-2;i<=2;i++){
+        s+=`<line x1="${X(i)}" y1="${p.top}" x2="${X(i)}" y2="${p.top+H}" stroke="#e8eff3"/>`;
+        s+=`<line x1="${p.left}" y1="${Y(i)}" x2="${p.left+W}" y2="${Y(i)}" stroke="#e8eff3"/>`;
+        s+=`<text x="${X(i)}" y="${p.height-10}" fill="#82989d" font-size="10" text-anchor="middle">${i}</text>`;
+        if(i!==0)s+=`<text x="${p.left-9}" y="${Y(i)+4}" fill="#82989d" font-size="10" text-anchor="end">${i}</text>`;
+      }
+      s+=`<line x1="${X(0)}" y1="${p.top}" x2="${X(0)}" y2="${p.top+H}" stroke="#799398" stroke-width="1.2"/>`;
+      s+=`<line x1="${p.left}" y1="${Y(0)}" x2="${p.left+W}" y2="${Y(0)}" stroke="#799398" stroke-width="1.2"/>`;
+      s+=`<text x="${p.left+W-4}" y="${Y(0)-8}" fill="#6f8891" font-size="12" font-style="italic">x</text>`;
+      s+=`<text x="${X(0)+9}" y="${p.top+11}" fill="#6f8891" font-size="12" font-style="italic">y</text>`;
+      s+=`<g clip-path="url(#ode-view-clip)">`;
+      for(let ix=-2;ix<=2.001;ix+=.5){
+        for(let iy=-2;iy<=2.001;iy+=.5){
+          const vx=mu*ix-iy,vy=ix+mu*iy;
+          const norm=Math.hypot(vx,vy);
+          if(norm<.03)continue;
+          const dx=vx/norm,dy=vy/norm;
+          const len=.24, x0=ix-dx*len*.5,y0=iy-dy*len*.5,x1=ix+dx*len*.5,y1=iy+dy*len*.5;
+          const h=.075;
+          const ax=x1-dx*h-dy*h*.52,ay=y1-dy*h+dx*h*.52;
+          const bx=x1-dx*h+dy*h*.52,by=y1-dy*h-dx*h*.52;
+          s+=`<path d="M${coord(x0,y0)} L${coord(x1,y1)} M${coord(ax,ay)} L${coord(x1,y1)} L${coord(bx,by)}" fill="none" stroke="#9bb3bb" stroke-width="1.15" stroke-linecap="round" stroke-linejoin="round" opacity=".8"/>`;
+        }
+      }
+      const seeds=[[.32,0],[.62,.8],[.95,1.6],[1.3,2.5],[1.65,3.5],[2,4.3]];
+      for(const [r,theta] of seeds){
+        s+=`<path d="${flowPath(mu,r,theta,-12,12)}" stroke="#228579" stroke-width="1.9" stroke-opacity=".70" fill="none" stroke-linecap="round"/>`;
+      }
+      const r0=.8, theta0=0, x0=r0;
+      s+=`<path d="${flowPath(mu,r0,theta0,0,t,.025)}" stroke="#d09d49" stroke-width="3.8" stroke-linecap="round" fill="none"/>`;
+      s+=`<circle cx="${X(x0)}" cy="${Y(0)}" r="4.2" fill="#213f52" stroke="#fff" stroke-width="1.3"/>`;
+      const r=r0*Math.exp(mu*t), x=r*Math.cos(t), y=r*Math.sin(t);
+      if(Math.abs(x)<=p.limit&&Math.abs(y)<=p.limit){
+        s+=`<circle cx="${X(x)}" cy="${Y(y)}" r="6.1" fill="#d39b39" stroke="white" stroke-width="2"/>`;
+      }
+      s+='</g>';
+      odeSvg.innerHTML=s;
+      odeSvg.setAttribute('aria-label',`Phase portrait of a two by two system with matrix entries ${fmt(mu,2)}, minus one, one, ${fmt(mu,2)}. ${status}. The highlighted solution at time ${fmt(t,1)} is x ${fmt(x,2)}, y ${fmt(y,2)}.`);
+      $('ode-solution').textContent=`x(${fmt(t,1)}) = (${fmt(x,2)}, ${fmt(y,2)})`;
+      $('ode-visibility').textContent=Math.abs(x)>p.limit||Math.abs(y)>p.limit?'Point lies outside the graph.':'';
+    }
+    muSlider.addEventListener('input',draw);
+    tSlider.addEventListener('input',draw);
+    presets.forEach(btn=>btn.addEventListener('click',()=>{muSlider.value=btn.dataset.odeMu;draw();}));
+    draw();
+  }
+})();
+
+</script>
+</body>
+</html>
